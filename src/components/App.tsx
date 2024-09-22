@@ -1,29 +1,35 @@
 import * as React from 'react';
-import { BrowserRouter, Route, Link, NavLink } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, NavLink } from 'react-router-dom';
 import Header from './header';
 import Home from './home';
 import Login from './Login';
 import MyComponent from './MyComponent';
 
 const App = () => {
+  const routes = [
+    { path: '/', element: <Home />, label: 'Home' },
+    { path: '/login', element: <Login />, label: 'Login' },
+    { path: '/mycomponent', element: <MyComponent />, label: 'My Component' },
+  ];
+
   return (
     <BrowserRouter>
       <div>
         <Header />
         <ul>
-          <li>
-            <NavLink to="/">Home</NavLink>
-          </li>
-          <li>
-            <NavLink to="/login">Login</NavLink>
-          </li>
-          <li>
-            <NavLink to="/mycomponent">My Component</NavLink>
-          </li>
+          {routes.map((route, index) => (
+            <li key={index}>
+              <NavLink to={route.path} className={({ isActive }) => isActive ? "active" : ""}>
+                {route.label}
+              </NavLink>
+            </li>
+          ))}
         </ul>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/mycomponent" element={<MyComponent />} />
+        <Routes>
+          {routes.map((route) => (
+            <Route key={route.path} path={route.path} element={route.element} />
+          ))}
+        </Routes>
       </div>
     </BrowserRouter>
   );
